@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>marquee</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="button" value="开始" v-on:click="startmarquee" />
+        <input type="button" value="停止" v-on:click="stopmarquee" />
+        <p v-text="msg"></p>
+        <p v-text="hint"></p>
+        <a href="http://www.baidu.com/" @click.prevent="gobaidu"> 百度一下！</a>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "这是用vue.js做的跑马灯效果",
+                hint: "事件修饰符：.stop    .prevent    .capture    .self    .once",
+                timer: null
+            },
+            methods: {
+                startmarquee: function () {
+                    let _this = this;
+                    if (this.timer == null) {
+                        this.timer = setInterval(function () {
+                            let first_char = _this.msg.substring(0, 1);
+                            let remain_char = _this.msg.substring(1);
+                            _this.msg = remain_char + first_char;
+                        }, 400);
+                    } else {
+                        return;
+                    }
+                },
+                stopmarquee: function () {
+                    clearInterval(this.timer);
+                    this.timer = null;
+                },
+                gobaidu: function () {
+                    console.log("触发了a标签的点击事件");
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>
