@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>props_data</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 使用v-bind，父组件向子组件传递数据 -->
+        <com1 v-bind:parentmsg='msg'></com1>
+        <!-- 使用v-on，父组件向子组件传递方法，同时数据也能通过方法从子组件传给父组件 -->
+        <com2 v-on:func545="show"></com2>
+    </div>
+
+    <template id="tmpl">
+        <div>
+            <h1>这是第二个子组件com2</h1>
+            <input type="button" value="点击调用父组件函数" v-on:click='sonclick' />
+        </div>
+
+    </template>
+
+    <script>
+        var com2 = {
+            template: '#tmpl',
+            data() {
+                return {
+                    sonmsg: { name: '张三', age: 18 }
+                }
+            },
+            methods: {
+                sonclick() {
+                    this.$emit('func545', this.sonmsg);
+                }
+            }
+        }
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "这是父组件的内容",
+                getsonmsg: null
+            },
+            methods: {
+                show(data) {
+                    console.log("调用了父组件中的show方法-----" + data);
+                    this.getsonmsg = data;
+                }
+            },
+            components: {
+                com2,
+                com1: {
+                    data() {
+                        return {};
+                    },
+                    template: "<h3>这是子组件的h3标题-----{{parentmsg}}</h3>",
+                    props: ['parentmsg'],
+                    filters: {},
+                    directives: {},
+                    components: {}
+                },
+                
+            },
+        });
+    </script>
+</body>
+
+</html>
